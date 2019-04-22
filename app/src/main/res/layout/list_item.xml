@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:minHeight="@dimen/list_item_height"
+    android:background="@color/tan_background">
 
 
     <ImageView
         android:id="@+id/image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/miwok_launcher"/>
+        android:layout_width="@dimen/list_item_height"
+        android:layout_height="@dimen/list_item_height"
+        />
 
     <LinearLayout
         android:id="@+id/text_container"
@@ -23,14 +24,23 @@
         <TextView
             android:id="@+id/miwok_text_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="lutti"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:text="lutti"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:gravity="bottom"/>
 
         <TextView
             android:id="@+id/default_text_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="one"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:text="one"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:gravity="top"/>
 
 
 

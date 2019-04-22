@@ -1,6 +1,7 @@
 package com.example.miwokmyappnanodegree;
 
 import android.app.Activity;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,10 @@ import java.util.ArrayList;
 
 public class WordAdapter extends ArrayAdapter<Word> {
 
-    public WordAdapter(Activity context, ArrayList<Word> words) {
+    //Resource Id for background color for the list of words
+    private int mColorResourceId;
+
+    public WordAdapter(Activity context, ArrayList<Word> words, int colorResourceId) {
 
 
         // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
@@ -22,6 +26,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
 
         super(context, 0, words);
+        mColorResourceId = colorResourceId;
     }
 
     @Override
@@ -91,6 +96,15 @@ public class WordAdapter extends ArrayAdapter<Word> {
              */
             imageView.setVisibility(View.GONE);
         }
+
+        //Set the theme color for the list item
+        View textContainer = listItemView.findViewById(R.id.text_container);
+
+        //find the color that the resource id maps to
+        int color = ContextCompat.getColor(getContext(), mColorResourceId);
+
+        //set the background color of the text container View
+        textContainer.setBackgroundColor(color);
 
 
         // Return the whole list item layout (containing 2 TextViews and an ImageView)

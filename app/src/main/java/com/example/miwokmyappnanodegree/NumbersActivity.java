@@ -83,7 +83,7 @@ public class NumbersActivity extends AppCompatActivity {
          *
          */
 
-        WordAdapter adapter = new WordAdapter(this, words);
+        WordAdapter adapter = new WordAdapter(this, words, R.color.category_numbers);
 
 //        GridView gridView = findViewById(R.id.grid); add numbersColumns in xml file for number of columns
 

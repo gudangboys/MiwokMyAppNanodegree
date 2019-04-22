@@ -38,7 +38,7 @@ public class PhrasesActivity extends AppCompatActivity {
          *
          */
 
-        WordAdapter adapter = new WordAdapter(this, words);
+        WordAdapter adapter = new WordAdapter(this, words, R.color.category_phrases);
 
 //        GridView gridView = findViewById(R.id.grid); add numbersColumns in xml file for number of columns
 
