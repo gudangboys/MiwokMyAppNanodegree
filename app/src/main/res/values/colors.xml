@@ -3,7 +3,7 @@
 
     <color name="colorPrimary">#4A312A</color>
     <color name="colorPrimaryDark">#2F1D1A</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#2F1D1A</color>
 
     <!-- Primary color of the app (Shown in the app bar) -->
     <!--<color name="primary_color">#4A312A</color>-->

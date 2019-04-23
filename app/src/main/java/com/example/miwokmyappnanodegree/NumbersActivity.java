@@ -108,7 +108,8 @@ public class NumbersActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(NumbersActivity.this, "List item Clicked", Toast.LENGTH_LONG).show();
-            mMediaPlayer = MediaPlayer.create(NumbersActivity.this, R.raw.number_one);
+                Word word = words.get(position);
+            mMediaPlayer = MediaPlayer.create(NumbersActivity.this, word.getmAudioResourceId());
             mMediaPlayer.start();
             }
         });
