@@ -22,15 +22,21 @@ public class Word {
 
     private static final int NO_IMAGE_PROVIDED = -1;
 
-    public Word(String defaultTranslation, String miwokTranslation) {
+    //Audio resource for each translation
+    private int mAudioResourceId;
+
+    public Word(String defaultTranslation, String miwokTranslation, int audioResourceId) {
         mDefaultTranslation = defaultTranslation;
         mMiwokTranslation = miwokTranslation;
+        mAudioResourceId = audioResourceId;
+
     }
 
-    public Word(String defaultTranslation, String miwokTranslation, int imageResourceID) {
+    public Word(String defaultTranslation, String miwokTranslation, int imageResourceID, int audioResourceId) {
         mDefaultTranslation = defaultTranslation;
         mMiwokTranslation = miwokTranslation;
         mImageResourceId = imageResourceID;
+        mAudioResourceId = audioResourceId;
     }
 
     /**
@@ -71,5 +77,8 @@ public class Word {
     }
 
 
+    // Return audio resource ID of the word
 
+
+    public int getmAudioResourceId() {return mAudioResourceId;}
 }
