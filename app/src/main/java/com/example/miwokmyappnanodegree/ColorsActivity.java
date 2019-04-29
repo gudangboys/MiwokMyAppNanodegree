@@ -1,5 +1,7 @@
 package com.example.miwokmyappnanodegree;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,10 +15,39 @@ public class ColorsActivity extends AppCompatActivity {
 
     private MediaPlayer mMediaPlayer;
 
+    private AudioManager mAudioManager;
+
+    private MediaPlayer.OnCompletionListener mCompletionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            releaseMediaPlayer();
+        }
+    };
+
+    AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener =
+            new AudioManager.OnAudioFocusChangeListener() {
+                @Override
+                public void onAudioFocusChange(int focusChange) {
+                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
+                            focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                        mMediaPlayer.pause();
+                        mMediaPlayer.seekTo(0);
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                        mMediaPlayer.start();
+                        //Resume Playback
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                        releaseMediaPlayer();
+                        //Stop Playback
+                    }
+                }
+            };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
+
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
 
         /**
@@ -62,12 +93,71 @@ public class ColorsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(NumbersActivity.this, "List item Clicked", Toast.LENGTH_LONG).show();
                 Word word = words.get(position);
-                mMediaPlayer = MediaPlayer.create(ColorsActivity.this, word.getmAudioResourceId());
-                mMediaPlayer.start();
+
+                //release the media player if it currently exist because user is about to play a different file.
+                //if user taps on a different audio file before the current one finishes playing, the
+                //onCompletionListener is never called, thats why we need to release resources
+                //and create a new MediaPlayer
+
+                releaseMediaPlayer();
+
+
+                //Request audio focus for playback
+                int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener,
+                        //use the music stream.
+                        AudioManager.STREAM_MUSIC,
+                        //Request permanent focus
+                        AudioManager.AUDIOFOCUS_GAIN);
+
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    //mAudioManager.registerMediaButtonEventreceiver(RemoteControlReceiver);
+                    //Start playback
+
+
+                    //Create and setup MediaPlayer for the resourse accociated with current word
+
+                    mMediaPlayer = MediaPlayer.create(ColorsActivity.this, word.getmAudioResourceId());
+
+
+                    mMediaPlayer.start();
+
+                    //Setup a listener on the media player and store it in a global variable so we can stop and release
+                    //media player once audio has finished playing
+                    mMediaPlayer.setOnCompletionListener(mCompletionListener);
+                }
             }
         });
 
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //when activity is stopped, release the media player resources to stop playing sounds
+        // and free resources
+        releaseMediaPlayer();
+    }
+
+
+    // Clean up the media player by releasing its resources.
+
+    private void releaseMediaPlayer() {
+        //If mediaPlayer is not null then it may be currently playing a sound
+
+        if (mMediaPlayer != null) {
+
+            //regardless of the current state of the media player, release  its resources becuase we no longer need it
+
+            mMediaPlayer.release();
+
+            //set the media player back to null. for out code we have decided that setting the media player to null
+            //is an easy way to tell that the media player is not configured to play an audio file at the moment.
+
+            mMediaPlayer = null;
+
+            mAudioManager.abandonAudioFocus(mOnAudioFocusChangeListener);
+        }
     }
     }
 
